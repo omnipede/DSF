@@ -45,8 +45,8 @@ public class Person {
     // Age pension (107 bytes)
     private AgePension agePension;
 
-    // Disability pension (70 bytes) - TODO: Create DisabilityPension class
-    private Object disabilityPension;
+    // Disability pension (70 bytes)
+    private DisabilityPension disabilityPension;
 
     // Disability history (266 bytes = 38 bytes × 7) - TODO
     private Object[] disabilityHistory;
@@ -100,6 +100,7 @@ public class Person {
         this.name = name;
         this.pensionStatus = new PensionStatus();
         this.agePension = new AgePension();
+        this.disabilityPension = new DisabilityPension();
         this.supportSupplement = new SupportSupplement();
     }
 
@@ -296,11 +297,11 @@ public class Person {
         this.agePension = agePension;
     }
 
-    public Object getDisabilityPension() {
+    public DisabilityPension getDisabilityPension() {
         return disabilityPension;
     }
 
-    public void setDisabilityPension(Object disabilityPension) {
+    public void setDisabilityPension(DisabilityPension disabilityPension) {
         this.disabilityPension = disabilityPension;
     }
 

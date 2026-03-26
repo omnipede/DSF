@@ -17,18 +17,21 @@ This project ports the historic Norwegian national insurance system to Java, pro
 
 ### Java Port Features
 
-- Terminal-based UI using JLine 3
-- Menu-driven navigation (same as original)
+- Terminal-based UI using JLine 3 (CICS-style screens)
+- Menu-driven navigation (same as original R0010101-R0010410 flow)
 - Person lookup by FNR (Norwegian national ID)
-- Pension record viewing
-- User authentication and role-based access control
+- Pension registration (AP - Age Pension, UP - Disability Pension)
+- Transaction processing with rollback support (R0012001)
+- User authentication and role-based access control (ACF2 simulation)
+- JSON-based persistence layer
 - In-memory database with demo data
+- FNR validation with checksum algorithm
 
 ## Building
 
 ### Prerequisites
 
-- Java 17 or higher
+- Java 11 or higher
 - Maven 3.6 or higher
 
 ### Build Commands
@@ -178,6 +181,41 @@ Simulates ACF2 security checks for user authentication and authorization.
 ### Memory Database (`MemoryDatabase.java`)
 In-memory storage for person records, simulating the mainframe database.
 
+## Implemented Features (v1.0.0)
+
+### Core Navigation ✅
+- R0010101 - Login/Start
+- R0010201 - User ID Validation
+- R0010301 - Function Selection
+- R0010401 - Registration Menu
+- R0010410 - Inquiry Main Program
+
+### Registration ✅
+- AP (Alderspensjon) - Age Pension Registration (R0010501)
+- UP (Uførepensjon) - Disability Pension Registration (R0010601)
+- Transaction Processing (R0012001)
+
+### Inquiry ✅
+- Person lookup by FNR
+- Display pension information
+- Display age, gender, pension type
+
+### Security ✅
+- User authentication
+- Role-based access control (16 roles)
+- ACF2 simulation
+
+### Utilities ✅
+- FNR validation with checksum (R0019904)
+- Date validation (R0019901)
+- Age calculation (R0019905)
+- Gender extraction (R0019902)
+
+### Data Persistence ✅
+- JSON file repository
+- Automatic backup on exit
+- Import/Export functionality
+
 ## Testing
 
 ```bash
@@ -192,22 +230,22 @@ mvn test -Dtest=ClassName
 
 This is a demonstration port with the following limitations:
 
-1. **Limited functionality:** Only inquiry (F) is fully implemented
-2. **In-memory database:** Data is not persisted
-3. **Simplified security:** ACF2 simulation, not full implementation
-4. **No mainframe integration:** Standalone Java application
-5. **Partial data model:** Not all pension types and segments implemented
+1. **Partial pension types:** AP and UP only (EP, FB, BP, FT, YK, AF not implemented)
+2. **Simplified calculations:** Pension calculations use simplified formulas
+3. **No mainframe integration:** Standalone Java application
+4. **Terminal UI only:** No web interface
 
 ## Future Enhancements
 
-- [ ] Full registration functionality
+- [ ] Complete remaining pension types (EP, FB, BP, FT, YK, AF)
+- [ ] Full pension calculation logic (G-run, trygdetid, special supplements)
 - [ ] Database persistence (H2/PostgreSQL)
-- [ ] Complete pension calculation logic
-- [ ] All pension types (AP, UP, EP, FB, BP, FT, YK, AF)
 - [ ] EEA/EU pro-rata calculations
 - [ ] Report generation
 - [ ] Export to JSON/CSV
 - [ ] Web UI option
+- [ ] Batch processing
+- [ ] Statistics and analytics
 
 ## License
 

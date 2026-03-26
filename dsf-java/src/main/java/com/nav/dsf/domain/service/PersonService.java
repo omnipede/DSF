@@ -24,6 +24,13 @@ public class PersonService {
     }
 
     /**
+     * Finds a person by FNR (alias for findPerson).
+     */
+    public Optional<Person> findByFnr(String fnr) {
+        return database.findByFnr(fnr);
+    }
+
+    /**
      * Finds a person or returns null if not found.
      */
     public Person findPersonOrNull(String fnr) {

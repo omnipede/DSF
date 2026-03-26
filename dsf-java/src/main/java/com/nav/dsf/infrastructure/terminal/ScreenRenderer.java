@@ -45,22 +45,32 @@ public class ScreenRenderer {
         terminal.clearScreen();
         terminal.displayHeader(userId, cicsName, null);
 
-        terminal.println("  VELG ROLLE:");
         terminal.println();
-        terminal.println("  ┌──────┬──────────────────────────────────────────────────┬──────┐");
-        terminal.println("  │ VALG │ ROLLE                                            │ TKNR │");
-        terminal.println("  ├──────┼──────────────────────────────────────────────────┼──────┤");
+        terminal.println("  ╔══════╦════════════════════════════════════════════════════╦══════╗");
+        terminal.println("  ║ VALG ║ ROLLE                                              ║ TKNR ║");
+        terminal.println("  ╠══════╬════════════════════════════════════════════════════╬══════╣");
 
         for (int i = 0; i < Math.min(roles.size(), 16); i++) {
-            String role = roles.get(i).getCode() + " - " + roles.get(i).getDescription();
+            String roleCode = roles.get(i).getCode();
+            String roleDesc = roles.get(i).getDescription();
+            // Truncate description if too long (max 42 chars for role name)
+            if (roleDesc.length() > 42) {
+                roleDesc = roleDesc.substring(0, 39) + "...";
+            }
+            String role = roleCode + " - " + roleDesc;
+            // Truncate if total role string is still too long
+            if (role.length() > 54) {
+                role = role.substring(0, 51) + "...";
+            }
             String tknr = tknrs.size() > i ? String.valueOf(tknrs.get(i)) : "     ";
-            String line = String.format("  │  %2d  │ %-50s │ %5s│", i + 1, role, tknr);
+            String line = String.format("  ║  %2d  ║ %-52s ║ %5s║", i + 1, role, tknr);
             terminal.println(line);
         }
 
-        terminal.println("  └──────┴──────────────────────────────────────────────────┴──────┘");
+        terminal.println("  ╚══════╩════════════════════════════════════════════════════╩══════╝");
         terminal.println();
-        terminal.println("  TAST VALG (1-16) ELLER 'S' FOR A VELGE FLERE:");
+        terminal.println("  TAST VALG (1-" + Math.min(roles.size(), 16) + ") ELLER F3 FOR AVSLUTT:");
+        terminal.println();
     }
 
     /**
@@ -91,26 +101,75 @@ public class ScreenRenderer {
     public static void renderRegistrationMenu(TerminalUI terminal, String userId, String cicsName, String roleName) {
         terminal.clearScreen();
         terminal.displayHeader(userId, cicsName, roleName);
-        
+
         terminal.println("  REGISTRERING - VELG STYREKODE:");
         terminal.println();
         terminal.println("  ┌─────────────────────────────────────────────────────────────┐");
-        terminal.println("  │  AP - ALDERSPENSJON                                         │");
-        terminal.println("  │  UP - UFØREPENSJON                                          │");
-        terminal.println("  │  EP - ETTERLATT EKTEFELLE                                   │");
-        terminal.println("  │  FB - FORELDRELØSE BARN                                     │");
-        terminal.println("  │  BP - ETTERLATTE BARN                                       │");
-        terminal.println("  │  FT - FORSØRGINGSTILL.                                      │");
-        terminal.println("  │  TG - TILLEGGSBLANKETT                                      │");
-        terminal.println("  │  E1 - ENDRINGSBLANKETT-1                                    │");
-        terminal.println("  │  O1 - OPPHØRSBLANKETT-1                                     │");
-        terminal.println("  │  O2 - OPPHØRSBLANKETT-2                                     │");
-        terminal.println("  │  AF - AFP (AVTALEFESTET PENSJON)                            │");
-        terminal.println("  │  YK - KORRIGERING YRKESKADE                                 │");
+        terminal.println("  │  AP - ALDERSPENSJON            UP - UFØREPENSJON            │");
+        terminal.println("  │  EP - ETTERLATT EKTEFELLE      FB - FORELDRELØSE BARN       │");
+        terminal.println("  │  BP - ETTERLATTE BARN          FT - FORSØRGINGSTILL.        │");
+        terminal.println("  │  TG - TILLEGGSBLANKETT         E1 - ENDRINGSBLANKETT-1      │");
+        terminal.println("  │  O1 - OPPHØRSBLANKETT-1        O2 - OPPHØRSBLANKETT-2       │");
+        terminal.println("  │  AF - AFP (AVTALEFESTET)       YK - YRKESKADE               │");
+        terminal.println("  │  UF - UNGE UFØRE FØR 1967                                   │");
         terminal.println("  │  XX - TILBAKE TIL HOVEDMENY                                 │");
         terminal.println("  └─────────────────────────────────────────────────────────────┘");
         terminal.println();
         terminal.println("  TAST STYREKODE: _");
+        terminal.println();
+    }
+
+    /**
+     * Renders Age Pension (AP) registration screen.
+     */
+    public static void renderAPRegistration(TerminalUI terminal, String userId, String cicsName, 
+                                            String roleName, String fnr, String name) {
+        terminal.clearScreen();
+        terminal.displayHeader(userId, cicsName, roleName);
+
+        terminal.println();
+        terminal.println("  ALDERSPENSJON - REGISTRERING");
+        terminal.println();
+        terminal.println("  ┌─────────────────────────────────────────────────────────────┐");
+        terminal.println("  │  FØDSELSNUMMER : " + (fnr != null ? fnr : "") + 
+            " ".repeat(Math.max(0, 48 - (fnr != null ? fnr.length() : 0))) + "│");
+        terminal.println("  │  NAVN          : " + (name != null ? name : "") + 
+            " ".repeat(Math.max(0, 48 - (name != null ? name.length() : 0))) + "│");
+        terminal.println("  │                                                             │");
+        terminal.println("  │  TRYGDETID (ÅR): _____                                      │");
+        terminal.println("  │  GRUNNPENSJON  : _____                                      │");
+        terminal.println("  │  SÆRTEKST    : _____                                      │");
+        terminal.println("  │                                                             │");
+        terminal.println("  │  [F1=HJELP]  [F3=AVBRYT]  [F12=NESTE]                        │");
+        terminal.println("  └─────────────────────────────────────────────────────────────┘");
+        terminal.println();
+    }
+
+    /**
+     * Renders Disability Pension (UP) registration screen.
+     */
+    public static void renderUPRegistration(TerminalUI terminal, String userId, String cicsName, 
+                                            String roleName, String fnr, String name) {
+        terminal.clearScreen();
+        terminal.displayHeader(userId, cicsName, roleName);
+
+        terminal.println();
+        terminal.println("  UFØREPENSJON - REGISTRERING");
+        terminal.println();
+        terminal.println("  ┌─────────────────────────────────────────────────────────────┐");
+        terminal.println("  │  FØDSELSNUMMER : " + (fnr != null ? fnr : "") + 
+            " ".repeat(Math.max(0, 48 - (fnr != null ? fnr.length() : 0))) + "│");
+        terminal.println("  │  NAVN          : " + (name != null ? name : "") + 
+            " ".repeat(Math.max(0, 48 - (name != null ? name.length() : 0))) + "│");
+        terminal.println("  │                                                             │");
+        terminal.println("  │  UFØRHETSGRAD (%): _____                                    │");
+        terminal.println("  │  SYKDOMSKODE     : _____                                    │");
+        terminal.println("  │  YRKESKODE       : _____                                    │");
+        terminal.println("  │  GRUNNPENSJON    : _____                                    │");
+        terminal.println("  │  SÆRTEKST        : _____                                    │");
+        terminal.println("  │                                                             │");
+        terminal.println("  │  [F1=HJELP]  [F3=AVBRYT]  [F12=NESTE]                        │");
+        terminal.println("  └─────────────────────────────────────────────────────────────┘");
         terminal.println();
     }
 

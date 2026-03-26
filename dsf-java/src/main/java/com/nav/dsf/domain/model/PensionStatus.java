@@ -60,6 +60,14 @@ public class PensionStatus {
     private String gpReductionCode;           // GP_REDUKSJON_KODE
     private LocalDate freeIncomeDate;         // FRIINNTEKT_DATO_ÅMD
 
+    // Gross amounts for calculation display
+    private int gpBrutto;                     // GP_BRUTTO
+    private int tpBrutto;                     // TP_BRUTTO
+    private int stBrutto;                     // ST_BRUTTO
+    private int btBrutto;                     // BT_BRUTTO
+    private int ktBrutto;                     // KT_BRUTTO
+    private int etBrutto;                     // ET_BRUTTO
+
     public PensionStatus() {
         this.statusCode = PensionStatusCode.ACTIVE;
         this.pensionType1 = " ";
@@ -371,6 +379,54 @@ public class PensionStatus {
 
     public void setFreeIncomeDate(LocalDate freeIncomeDate) {
         this.freeIncomeDate = freeIncomeDate;
+    }
+
+    public int getGpBrutto() {
+        return gpBrutto;
+    }
+
+    public void setGpBrutto(int gpBrutto) {
+        this.gpBrutto = gpBrutto;
+    }
+
+    public int getTpBrutto() {
+        return tpBrutto;
+    }
+
+    public void setTpBrutto(int tpBrutto) {
+        this.tpBrutto = tpBrutto;
+    }
+
+    public int getStBrutto() {
+        return stBrutto;
+    }
+
+    public void setStBrutto(int stBrutto) {
+        this.stBrutto = stBrutto;
+    }
+
+    public int getBtBrutto() {
+        return btBrutto;
+    }
+
+    public void setBtBrutto(int btBrutto) {
+        this.btBrutto = btBrutto;
+    }
+
+    public int getKtBrutto() {
+        return ktBrutto;
+    }
+
+    public void setKtBrutto(int ktBrutto) {
+        this.ktBrutto = ktBrutto;
+    }
+
+    public int getEtBrutto() {
+        return etBrutto;
+    }
+
+    public void setEtBrutto(int etBrutto) {
+        this.etBrutto = etBrutto;
     }
 
     @Override

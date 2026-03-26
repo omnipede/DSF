@@ -36,6 +36,10 @@ public enum PensionType {
         return englishName;
     }
 
+    public String getCode() {
+        return this.name();
+    }
+
     public static PensionType fromCode(String code) {
         for (PensionType type : values()) {
             if (type.name().equals(code)) {
